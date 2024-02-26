@@ -3,42 +3,26 @@
 #include <stdio.h>
 #include <string.h>
 
+#define TRUE 1
+#define FALSE 0
 
-// Node & List Data Structures
-typedef struct _node {
-    char* _data;
-    struct _node* _next;
-} Node;
+typedef struct _Node{
+    char *_data;
+    struct _Node *_next;
+}Node;
 
-
-struct _StrList {
-    Node* _head;
+typedef struct _StrList{
+    Node *_head;
     size_t _size;
-};
+}StrList;
 
-
-// Node implementation
-//------------------------------------------------
-
-
-
-Node* Node_alloc(const char* data, Node* next) {
-    Node* p = (Node*)malloc(sizeof(Node));
-    if (p == NULL) {
-        return NULL;
+Node* Node_alloc(const char* data, Node* next){
+    Node *node = (Node*)malloc(sizeof(Node));
+    if(node!=NULL){
+        node->_data = strdup(data);
+        node->_next = next;
     }
-    
-    // Allocate memory for the string data and copy the string
-    p->_data = strdup(data);
-    if (p->_data == NULL) {
-        free(p); // Free the previously allocated node
-        return NULL;
-    } 
-    
-    // Set the next pointer
-    p->_next = next;
-    
-    return p;
+    return node;
 }
 
 void Node_free(Node* node) {

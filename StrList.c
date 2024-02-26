@@ -67,98 +67,49 @@ void StrList_insertAt(StrList* StrList, const char* data,int index){
     StrList->_size++;
 }
 
-/*
- * Returns the StrList first data.
- */
 char* StrList_firstData(const StrList* StrList){
-    if (StrList->_head != NULL) {
-        return StrList->_head->_data;
-    }
-    //when list is empty
-    return NULL; 
+    if(StrList->_head == NULL){ return NULL; }
+    return StrList->_head->_data;
 }
 
-
-/*
- * Prints the StrList to the standard output.
- */
 void StrList_print(const StrList* StrList){
-    
-    if (StrList->_head == NULL) {
-        printf("\n");
-        return;
-    }
-     Node* ptr = StrList->_head;
-    while (ptr != NULL){
-        if (ptr->_next == NULL){
-            printf("%s", ptr->_data); 
-        }else {
-        printf("%s ", ptr->_data); }
-        ptr = ptr->_next;
-    }
-     printf("\n"); 
-}
-
-/*
- Prints the word at the given index to the standard output.
-*/
-void StrList_printAt(const StrList* Strlist,int index){
- 
-  if (index < 0 || index >= Strlist->_size)
-        return; // Invalid index or index out of bounds
-    
-    Node* ptr = Strlist->_head;
-    
-    for (int i = 0; i < index; i++) {
-        ptr = ptr->_next;
-        if (ptr == NULL)
-            return; // Index out of bounds
-    }
-    
-    printf("%s\n", ptr->_data);
-}
-
-/*
- * Return the amount of chars in the list.
-*/
-int StrList_printLen(const StrList* Strlist){
-    
-    int charsAmount = 0;
-    Node* ptr = Strlist->_head;
-    
-    while (ptr !=NULL) {
-        
-        charsAmount = charsAmount + strlen(ptr->_data);
-        
-        ptr = ptr->_next;
-        
-    }
-    
-    return charsAmount;
-}
-
-/*
-Given a string, return the number of times it exists in the list.
-*/
-int StrList_count(StrList* StrList, const char* data){
-    
-    int count =0;
-    Node* ptr = StrList->_head;
-    
-    while (ptr !=0) {
-        
-        if (strcmp(ptr->_data, data) == 0){
-            count ++;
+    Node* curNode = StrList->_head;
+    if(curNode != NULL){
+        while (curNode->_next != NULL){
+            printf("%s ", curNode->_data);
+            curNode = curNode->_next;
         }
-       ptr = ptr->_next; 
+        printf("%s", curNode->_data);
     }
-    
+    printf("\n");
+}
+
+void StrList_printAt(const StrList* Strlist,int index){
+    if(index < 0 || index >= Strlist->_size){ return; }
+    Node* curNode = Strlist->_head;
+    for(int i=0; i<index; i++){ curNode = curNode->_next; }
+    printf("%s\n", curNode->_data);
+}
+
+int StrList_printLen(const StrList* Strlist){
+    int count=0;
+    Node* curNode = Strlist->_head;
+    while (curNode != NULL){ 
+        count += strlen(curNode->_data);
+        curNode = curNode->_next; 
+    }
     return count;
 }
 
-/*
-	Given a string and a list, remove all the appearences of this string in the list.
-*/
+int StrList_count(StrList* StrList, const char* data){
+    int count=0;
+    Node* curNode = StrList->_head;
+    while (curNode != NULL){ 
+        if(strcmp(curNode->_data,data) == 0){ count ++; }
+        curNode = curNode->_next; 
+    }
+    return count;
+}
 void StrList_remove(StrList* StrList, const char* data){
     
      Node* ptr = StrList->_head;

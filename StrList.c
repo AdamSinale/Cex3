@@ -160,62 +160,38 @@ int StrList_isEqual(const StrList* StrList1, const StrList* StrList2){
     return TRUE;
 }
 
-/*
- * Clones the given StrList. 
- * It's the user responsibility to free it with StrList_free.
- */
 StrList* StrList_clone(const StrList* Strlist){
-    
     StrList* clone = StrList_alloc();
-    
-
-    Node* ptr1 = Strlist->_head;
-    
-    while(ptr1!= NULL){
-        
-        StrList_insertLast(clone,ptr1->_data);
-        ptr1=ptr1->_next;
+    Node* curNode = Strlist->_head;
+    while(curNode != NULL){
+        StrList_insertLast(clone, curNode->_data);
+        curNode = curNode->_next;
     }
-    
     return clone;
-    }
-
-/*
- * Reverces the given StrList. 
- */
-void StrList_reverse( StrList* StrList){
-
-    Node* prev = NULL;
-    Node* curr = StrList->_head;
-    Node* after = NULL;
-
-    while (curr != NULL)
-    {
-        after = curr->_next;
-        curr->_next = prev; //the change
-
-        prev = curr;
-        curr = after;
-
-    }
-    StrList->_head=prev;
 }
 
-// /*
-//  * Sort the given list in lexicographical order 
-//  */
-
-
-
-    // Function to swap the data of two nodes
-    void swap(Node* a, Node* b) {
-        char* temp = a->_data;
-        a->_data = b->_data;
-        b->_data = temp;
+void StrList_reverse(StrList* list) {
+    Node *prev = NULL, *current = list->_head, *next = NULL;
+    while (current != NULL) {
+        next = current->_next;
+        current->_next = prev;
+        prev = current;
+        current = next;
     }
-    void StrList_sort( StrList* StrList){
-        if (StrList == NULL || StrList->_head == NULL || StrList->_head->_next == NULL)
-        return; // Nothing to sort or only one element
+    list->_head = prev;
+}
+
+
+
+// Function to swap the data of two nodes
+void swap(Node* a, Node* b) {
+    char* temp = a->_data;
+    a->_data = b->_data;
+    b->_data = temp;
+}
+void StrList_sort( StrList* StrList){
+    if (StrList == NULL || StrList->_head == NULL || StrList->_head->_next == NULL)
+    return; // Nothing to sort or only one element
     
     int swapped;
     Node* ptr1;
@@ -237,19 +213,14 @@ void StrList_reverse( StrList* StrList){
     
 }
 
-/*
- * Checks if the given list is sorted in lexicographical order
- * returns 1 for sorted,   0 otherwise
- */
 int StrList_isSorted(StrList* StrList){
-    Node* ptr = StrList->_head;
-
-    
-    while (ptr != NULL && ptr->_next != NULL) {
-        if (strcmp(ptr->_data, ptr->_next->_data) > 0) {
-            return 0; // Not sorted
+    if(StrList->_size < 2){ return TRUE; }
+    Node* curNode = StrList->_head;
+    while (curNode->_next != NULL){
+        if(strcmp(curNode->_data, curNode->_next->_data) > 0){
+            return FALSE;
         }
-        ptr = ptr->_next;
+        curNode = curNode->_next;
     }
-    return 1; 
+    return TRUE;
 }

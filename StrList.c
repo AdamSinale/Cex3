@@ -345,77 +345,51 @@ StrList* StrList_clone(const StrList* Strlist){
     return clone;
     }
 
-/*
- * Reverces the given StrList. 
- */
-void StrList_reverse( StrList* StrList){
-
-    Node* prev = NULL;
-    Node* curr = StrList->_head;
-    Node* after = NULL;
-
-    while (curr != NULL)
-    {
-        after = curr->_next;
-        curr->_next = prev; //the change
-
-        prev = curr;
-        curr = after;
-
+void StrList_reverse(StrList* list) {
+    Node *prev = NULL, *current = list->_head, *next = NULL;
+    while (current != NULL) {
+        next = current->_next;
+        current->_next = prev;
+        prev = current;
+        current = next;
     }
-    StrList->_head=prev;
+    list->_head = prev;
 }
 
-// /*
-//  * Sort the given list in lexicographical order 
-//  */
 
+void StrList_sort(StrList* list) {
+    if (list->_size < 2) { return; }
 
-
-    // Function to swap the data of two nodes
-    void swap(Node* a, Node* b) {
-        char* temp = a->_data;
-        a->_data = b->_data;
-        b->_data = temp;
-    }
-    void StrList_sort( StrList* StrList){
-        if (StrList == NULL || StrList->_head == NULL || StrList->_head->_next == NULL)
-        return; // Nothing to sort or only one element
-    
     int swapped;
-    Node* ptr1;
-    Node* lptr = NULL;
+    Node *ptr1;
+    Node *lptr = NULL;
 
     do {
         swapped = 0;
-        ptr1 = StrList->_head;
+        ptr1 = list->_head;
 
         while (ptr1->_next != lptr) {
             if (strcmp(ptr1->_data, ptr1->_next->_data) > 0) {
-                swap(ptr1, ptr1->_next);
+                char* temp = ptr1->_data;
+                ptr1->_data = ptr1->_next->_data;
+                ptr1->_next->_data = temp;
                 swapped = 1;
             }
             ptr1 = ptr1->_next;
         }
         lptr = ptr1;
     } while (swapped);
-    
 }
 
-/*
- * Checks if the given list is sorted in lexicographical order
- * returns 1 for sorted,   0 otherwise
- */
 int StrList_isSorted(StrList* StrList){
-    Node* ptr = StrList->_head;
-
-    
-    while (ptr != NULL && ptr->_next != NULL) {
-        if (strcmp(ptr->_data, ptr->_next->_data) > 0) {
-            return 0; // Not sorted
+    if(StrList->_size < 2){ return TRUE; }
+    Node* curNode = StrList->_head;
+    while (curNode->_next != NULL){
+        if(strcmp(curNode->_data, curNode->_next->_data) > 0){
+            return FALSE;
         }
-        ptr = ptr->_next;
+        curNode = curNode->_next;
     }
-    return 1; 
+    return TRUE;
 }
 

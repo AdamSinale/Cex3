@@ -1,19 +1,26 @@
-CC = gcc
-AR = ar
-OBJECTS_MAIN = Main.o
-OBJECTS_LIB_MY_LIST = StrList.o
-FLAGS = -Wall -g
+CC=gcc
+AR=ar
+FLAGS= -Wall -g
 
-all: myList.a StrList
+all:  StrList
 
-myList.a:$(OBJECTS_LIB_MY_LIST)
-	$(AR) -rcs myList.a $(OBJECTS_LIB_MY_LIST)
+# Rule to build the library 'libStrList.a'
+libStrList.a: StrList.o
+	ar rcs libStrList.a StrList.o
 
-StrList: $(OBJECTS_MAIN) myList.a
-	$(CC) $(FLAGS) -o StrList $(OBJECTS_MAIN) myList.a
+# Rule to compile my_graph.c into an object file
+StrList.o: StrList.c StrList.h 
+	$(CC) $(FLAGS) -c StrList.c -fPIC
 
-StrList.o: StrList.c StrList.h
-	$(CC) $(FLAGS) -c StrList.c
+ #Rule to compile Main.c into an object file
+Main.o: Main.c StrList.h
+	$(CC) $(FLAGS) -c Main.c -o Main.o
 
-clean:
-	rm -f *.o *.a StrList
+# Rule to link the executable with the library
+StrList: Main.o libStrList.a
+	$(CC) $(FLAGS) Main.o -L. -lStrList -o StrList
+
+.PHONY: clean all
+
+clean: 
+	rm -f *.o *.a *.so StrList

@@ -1,7 +1,7 @@
 #pragma once
-
+#include <string.h>
 #include <stdlib.h>
-
+#include <stdio.h>
 /********************************************************************************
  *
  * A StrList library.
@@ -39,8 +39,7 @@ size_t StrList_size(const StrList* StrList);
 /*
  * Inserts an element in the end of the StrList.
  */
-void StrList_insertLast(StrList* StrList,
-					  const char* data);
+void StrList_insertLast(StrList* StrList, const char* data);
 
 /*
 * Inserts an element at given index
@@ -93,7 +92,7 @@ int StrList_isEqual(const StrList* StrList1, const StrList* StrList2);
  * Clones the given StrList. 
  * It's the user responsibility to free it with StrList_free.
  */
-StrList* StrList_clone(const StrList* Strlist);
+StrList* StrList_clone(const StrList* StrList);
 
 /*
  * Reverces the given StrList. 
@@ -110,9 +109,4 @@ void StrList_sort( StrList* StrList);
  * returns 1 for sorted,   0 otherwise
  */
 int StrList_isSorted(StrList* StrList);
-
-
-void buildList(StrList* StrList, int length, char* str);
-
-
 

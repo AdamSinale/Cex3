@@ -110,90 +110,54 @@ int StrList_count(StrList* StrList, const char* data){
     }
     return count;
 }
+
 void StrList_remove(StrList* StrList, const char* data){
-    
-     Node* ptr = StrList->_head;
-     Node* prev = NULL;
-     
-     while(ptr != NULL){
-     
-     if(strcmp(ptr->_data, data) == 0){ // Check if the data in the current node matches the given string
-         if(prev == NULL){      //when the node is the head
-             StrList->_head = ptr->_next;
-         }
-         else{
-           prev->_next = ptr->_next;
-         }
-        // Free the memory allocated for the matched node
-        Node* temp = ptr;
-         ptr= ptr->_next;
-         free(temp);
-         StrList->_size --;
-     } 
-     else{ // No match found
-         prev = ptr;
-         ptr = ptr->_next;
-       }
-     }
-}
-
-/*
-	Given an index and a list, remove the string at that index.
-*/
-void StrList_removeAt(StrList* StrList, int index){
-    
-    
-     if (StrList->_head == NULL) {
-        return;
+    Node* curNode = StrList->_head;
+    while(curNode != NULL && strcmp(curNode->_data,data) == 0){
+        Node_free(curNode);
+        curNode = curNode->_next;
+        StrList->_size--; 
     }
-    if (index < 0 || index >= StrList->_size){
-        return; // Invalid index or index out of bounds
-    }
-    Node* prev = NULL;
-    Node* ptr = StrList->_head;
-    for (int i = 0; i < index; i++) {
-        
-        prev = ptr;
-        ptr = ptr->_next;
-    }
-    
-     if(prev == NULL){      //when the node is the head
-             StrList->_head = ptr->_next;
-     }
-     
-     else{
-           prev->_next = ptr->_next;
-         }
-         free(ptr);
-         StrList->_size --;
-}
-
-/*
- * Checks if two StrLists have the same elements
- * returns 0 if not and any other number if yes
- */
-int StrList_isEqual(const StrList* StrList1, const StrList* StrList2){
-    
-    if (StrList1->_size != StrList2->_size) {
-        return 0; // Lists are not equal
-    }
-    
-    Node* ptr1 = StrList1->_head;
-    Node* ptr2 = StrList2->_head;
-    
-    
-    while(ptr1 != NULL && ptr2 != NULL){
-    
-        if (strcmp(ptr1->_data, ptr2->_data) != 0){
-            return 0;
+    StrList->_head = curNode;
+    while (curNode->_next != NULL){ 
+        if(strcmp(curNode->_next->_data,data) == 0){ 
+            Node* free = curNode->_next;
+            curNode->_next = curNode->_next->_next;
+            Node_free(free);
+            StrList->_size--; 
         }
-        
-        ptr1 = ptr1->_next;
-        ptr2 = ptr2->_next;
-
+        curNode = curNode->_next; 
     }
-    
-    return 1;
+}
+
+void StrList_removeAt(StrList* StrList, int index){
+    if(index < 0 || index >= StrList->_size){ return; }
+    Node* curNode = StrList->_head;
+    if(index == 0){
+        StrList->_head = curNode->_next;
+        Node_free(curNode);
+    }
+    else{
+        for(int i=0; i<index-1; i++){ curNode = curNode->_next; }
+        Node* free = curNode->_next;
+        curNode->_next = curNode->_next->_next;
+        Node_free(free);
+    }
+    StrList->_size--; 
+}
+
+int StrList_isEqual(const StrList* StrList1, const StrList* StrList2){
+    if(StrList1->_size != StrList2->_size){ return FALSE; }
+    Node* curNode1 = StrList1->_head;
+    Node* curNode2 = StrList2->_head;
+    for(int i=0; i<StrList1->_size; i++){
+        if(strcmp(curNode1->_data,curNode1->_data) != 0){
+            return FALSE;
+        }
+        curNode1 = curNode1->_next;
+        curNode2 = curNode2->_next;
+    }
+    return TRUE;
 }
 
 /*

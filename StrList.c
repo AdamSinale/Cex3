@@ -24,57 +24,29 @@ Node* Node_alloc(const char* data, Node* next){
     }
     return node;
 }
+StrList* StrList_alloc(){
+    StrList *list = (StrList*)malloc(sizeof(StrList));
+    list->_head = NULL;
+    list->_size = 0;
+    return list;
+}
 
 void Node_free(Node* node) {
 	free(node->_data);
 	free(node);
 }
-//------------------------------------------------
-
-/*
- * Allocates a new empty StrList.
- * It's the user responsibility to free it with StrList_free.
- */
-StrList* StrList_alloc(){
-    StrList* new_list = (StrList*)malloc(sizeof(StrList));
-    if (new_list == NULL){
-        printf("can not allocate memory");
-        return NULL;
-    } else {
-    new_list->_head= NULL;
-	new_list->_size= 0;
-	return new_list;
-    }
-}
-
-/*
- * Frees the memory and resources allocated to StrList.
- * If StrList==NULL does nothing (same as free).
- */
 void StrList_free(StrList* StrList){
-    if (StrList==NULL) return;
-    Node* p1 = StrList-> _head;
-    Node* p2;
-    while(p1) {
-        p2 =p1;
-        p1 = p1->_next;
-        Node_free(p2);
+    Node* curr = StrList->_head;
+    while (curr != NULL) {
+        Node* toDelete = curr;
+        curr = curr->_next;
+        Node_free(toDelete);
     }
-     //StrList->_head = NULL;
-    // free(StrList);
-    // StrList = NULL;
     StrList->_head = NULL;
-    StrList->_size = 0;
 }
 
-/*
- * Returns the number of elements in the StrList.
- */
-size_t StrList_size(const StrList* StrList){
-    
+size_t StrList_size(const StrList* StrList){  
    return StrList ? StrList->_size : 0;
-   
-    
 }
 
 

@@ -108,6 +108,7 @@ void StrList_insertLast(StrList* StrList, const char* data)
         StrList->_head->data = (char*)malloc(strlen(data) + 1);
         strcpy(StrList->_head->data, data);
         StrList->_head->next = NULL;
+        StrList->_size++;
         return;
     }
     node * curr = StrList->_head;
@@ -134,6 +135,7 @@ void StrList_insertLast(StrList* StrList, const char* data)
     } else {
         curr->next = new_node;
     }
+    StrList->_size++;
 }
 
 
@@ -167,6 +169,7 @@ void StrList_insertAt(StrList* StrList, const char* data, int index)
         new_node->next = curr->next;
         curr->next = new_node;
     }
+    StrList->_size++;
 }
 
 
@@ -268,6 +271,7 @@ void StrList_remove(StrList* StrList, const char* data)
             curr = curr->next;
             free(toDelete->data);
             free(toDelete);
+            StrList->_size--;
         }
         else {
             prev = curr;
@@ -290,6 +294,7 @@ void StrList_removeAt(StrList* StrList, int index){
         StrList->_head = curr->next->next;
         free(toDelete->data);
         free(toDelete);
+        StrList->_size--;
         return;
     }
 
@@ -307,6 +312,7 @@ void StrList_removeAt(StrList* StrList, int index){
         return;
     }
     prev->next = curr->next;
+    StrList->_size--;
     free(curr->data);
     free(curr);
 }
@@ -402,6 +408,3 @@ int StrList_isSorted(StrList* list) {
     }
     return 1; // Sorted
 }
-
-
-

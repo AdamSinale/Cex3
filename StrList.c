@@ -49,57 +49,21 @@ size_t StrList_size(const StrList* StrList){
    return StrList ? StrList->_size : 0;
 }
 
-
-/*
- * Inserts an element in the end of the StrList.
- */
 void StrList_insertLast(StrList* StrList, const char* data){
-   
-   
-   // Allocate memory for the new node
-    Node* newNode = Node_alloc(data, NULL);
-   
-    if (StrList->_head == NULL){ //if it empty
-        StrList->_head = newNode;
-        StrList->_size++;
-        return;
-    }
-    else {
-    Node* ptr = StrList->_head;
-    while (ptr->_next != NULL){
-    ptr = ptr->_next;
-   }
-     ptr->_next = newNode;
-    }
-     StrList->_size++;
-  }
+     StrList_insertAt(StrList, data, StrList->_size);
+}
 
-/*
-* Inserts an element at given index
-*/
 void StrList_insertAt(StrList* StrList, const char* data,int index){
-    if (index < 0 || index > StrList->_size)
-        return; // Invalid index
-
-    Node* newNode = Node_alloc(data, NULL);
-    if (newNode == NULL)
-        return; 
-
-    if (index == 0) { // Insert at the head
-        newNode->_next = StrList->_head;
+    if(index < 0 || index > StrList->_size){ return; }
+    if(index == 0 ){
+        Node* newNode = Node_alloc(data, StrList->_head);
         StrList->_head = newNode;
-        
-    } else {
-        Node* ptr = StrList->_head;
-        for (int i = 0; i < index - 1 && ptr != NULL; i++) {
-            ptr = ptr->_next;
-        }
-        if (ptr == NULL)
-            return; // Index out of bounds
-        newNode->_next = ptr->_next;
-        ptr->_next = newNode;
+    }else{
+        Node* curNode = StrList->_head;
+        for(int i=0; i<index-1; i++){ curNode = curNode->_next; }
+        Node* newNode = Node_alloc(data, curNode->_next);
+        curNode->_next = newNode;
     }
-
     StrList->_size++;
 }
 

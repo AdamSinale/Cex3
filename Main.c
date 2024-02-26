@@ -1,114 +1,129 @@
-#include "StrList.h"
 #include <stdio.h>
+#include "StrList.h"
+
+int main() {
+
+    StrList* list = StrList_alloc();
+     int index2=0;
+     char sentence[500];  
+    int wordCnt=0,choice = 0,index =0;
+    
+    //switch case of 1-13 +0 
+      
+   do {
+      // printf("enter your choice \n");
+       scanf("%d",&choice);
+        getchar();
 
 
-
-int main(){
-
-int choice;
-StrList * list;
-int index;
-int _index;
-char a [100];
-char str[100];
-int __index;
-
-
-do{
-    //printf("\nenter function");
-    scanf("%d", &choice);
-    switch (choice) {
-        case 1:
-            //printf("how many words\n");
-            list = StrList_alloc();
-            int number_of_words;
-            scanf("%d", &number_of_words);  
-            char story[1000];
-            //printf("enter a string\n");
-            scanf(" %[^\n]s", story);
-            buildList(list, number_of_words, story);
+        switch (choice) {
+           
+           case 0:
+                exit(0);
             break;
+           
+           
+            case 1:
+             //the scan func
+    
+    //printf("enter the number of word \n");
+    scanf("%d",&wordCnt);
+    getchar();
+    
+    //printf("Enter a sentence: ");
+    fgets(sentence, sizeof(sentence), stdin);
 
-        case 2:
-            //printf("enter index");
-            scanf("%d", &index);
-            //printf("enter word");
-            char word[1000];
-            scanf("%s", word);
-            StrList_insertAt(list, word, index);
-            break;
 
-        case 3:
-            StrList_print(list);
-            break;
+    // Tokenize the sentence into words and insert each word into the StrList
+    char* token = strtok(sentence, " ");
+    while (token != NULL) {
+        // Remove newline character if present
+        if (token[strlen(token) - 1] == '\n') {
+            token[strlen(token) - 1] = '\0';
+        }
+        StrList_insertLast(list, token);  // Insert the word into the StrList
+        token = strtok(NULL, " ");  // Move to the next word
+    }
+                
+                break;
+            case 2:// Insert string in some index
+                   // printf("enter index\n");
+                    scanf("%d", &index);
+                   // printf("enter word\n");
+                    scanf("%s", sentence);
+                    StrList_insertAt(list, sentence, index);
+        
+                break;
+             case 3: //print the list
+                    StrList_print(list);
+                    break;
+            case 4:
+                   printf("%zu\n", StrList_size(list));
+                    break;
+            case 5:
+               // printf("5 -enter index");
+                scanf("%d", &index2);
+                StrList_printAt(list ,index2);
+                    break;
+            case 6:
+                printf("%d\n", StrList_printLen(list)); 
+                    break;
+            case 7:
+                //printf("7- enter a string");
+                scanf("%s", sentence);
+                printf("%d\n",StrList_count(list,sentence));
+                    break;
+            case 8:
+                //printf("8 -enter a string");
+                scanf("%s", sentence);
+                StrList_remove(list,sentence);
+                     break;
+            case 9:
+                //printf(" 9 -enter index");
+                scanf("%d", &index2);
+                StrList_removeAt(list,index2);
+                     break;
+            case 10:
+               StrList_reverse(list);
+                     break;
+            case 11:
+                StrList_free(list);
+                     break;
+            case 12:
+               StrList_sort(list);
 
-        case 4:
-            printf("%zu\n", StrList_size(list));
-            break;
-
-        case 5:
-            //printf("enter index");
-            scanf("%d", &_index);
-            StrList_printAt(list,  _index);
-            break;
-
-        case 6:
-            printf("%d\n",StrList_printLen(list));
-            break;
-
-        case 7:
-            //printf("enter a string\n");
-            scanf(" %[^\n]s", a);
-            printf("%d\n" , StrList_count(list, a));
-            break;
-
-        case 8:
-            //printf("enter string");
-            scanf("%s", str);
-            StrList_remove(list, str);
-            break;
-
-        case 9:
-            //printf("enter index");
-            scanf("%d", &__index);
-            StrList_removeAt(list,  __index);
-            break;
-
-        case 10:
-            StrList_reverse(list);
-            break;
-
-        case 11:
-            StrList_free(list);
-            break;
-
-        case 12:
-            StrList_sort(list);
-            break;
-
-        case 13:
-            if(StrList_isSorted(list)){
+                     break;
+            case 13:
+                if(StrList_isSorted(list)){
                 printf("true\n");
             }
-            else {
+                else {
                 printf("false\n");
             }
-            break;
-
-        default:
-            break;
-
-
-
+                     break;    
+            default:
+                    printf("Invalid choice\n");
+                     break;
+        }
+       
     }
-}while(choice != 0);
+   
+   while(choice !=0);
+   
+ 
 
+    // // Print the contents of the list
+    // printf("Words in the list:\n");
+    // StrList_print(list);
 
+    // Free the memory allocated for the list
+    StrList_free(list);
 
-return 0;
+   
+    
+    return 0;
 }
 
 
 
-
-
+ 

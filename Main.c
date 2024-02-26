@@ -20,17 +20,10 @@ int main(){
     while(function != 0){
         switch(function){
             case 1:
-                scanf("%d", &storyLen);  
-                scanf("%s", story);
-                printf("%s", story);
-                for(i=0;i<strlen(story); i++){
-                    j=0;
-                    while(story[i] != ' ' && i<strlen(story)){
-                        word[j] = story[i];
-                        i++;
-                        j++;
-                    }
-                    word[j] = '\0';
+                scanf("%d", &storyLen);
+                for (size_t i = 0; i < storyLen; i++)
+                {
+                    scanf("%s", word);
                     StrList_insertLast(list, word);
                 }
                 break;

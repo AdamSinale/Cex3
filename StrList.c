@@ -181,36 +181,26 @@ void StrList_reverse(StrList* list) {
     list->_head = prev;
 }
 
-
-
-// Function to swap the data of two nodes
-void swap(Node* a, Node* b) {
-    char* temp = a->_data;
-    a->_data = b->_data;
-    b->_data = temp;
-}
-void StrList_sort( StrList* StrList){
-    if (StrList == NULL || StrList->_head == NULL || StrList->_head->_next == NULL)
-    return; // Nothing to sort or only one element
-    
+void StrList_sort(StrList* list) {
+    if (list->_head == NULL || list->_head->_next == NULL) { return; }
     int swapped;
-    Node* ptr1;
-    Node* lptr = NULL;
-
+    Node *ptr1;
+    Node *lptr = NULL;
     do {
         swapped = 0;
-        ptr1 = StrList->_head;
+        ptr1 = list->_head;
 
         while (ptr1->_next != lptr) {
             if (strcmp(ptr1->_data, ptr1->_next->_data) > 0) {
-                swap(ptr1, ptr1->_next);
+                char* temp = ptr1->_data;
+                ptr1->_data = ptr1->_next->_data;
+                ptr1->_next->_data = temp;
                 swapped = 1;
             }
             ptr1 = ptr1->_next;
         }
         lptr = ptr1;
     } while (swapped);
-    
 }
 
 int StrList_isSorted(StrList* StrList){
